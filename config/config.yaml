@@ -1,0 +1,20 @@
+llm:
+  groq:
+    provider: "groq"
+    model_name: "llama-3.1-8b-instant"
+    temperature: 0.4
+    top_p: 0.9
+    max_tokens: 512
+    frequency_penalty: 0.0
+    presence_penalty: 0.0
+    timeout: 60
+
+  openai:
+    provider: "openai"
+    model_name: "o4-mini"
+    temperature: 0.3
+    top_p: 0.9
+    max_tokens: 400
+    frequency_penalty: 0.0
+    presence_penalty: 0.0
+    timeout: 60

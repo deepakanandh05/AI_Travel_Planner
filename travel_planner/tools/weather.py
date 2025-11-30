@@ -20,13 +20,17 @@ class WeatherOutputSchema(BaseModel):
 # --------- Tool Definition ----------- #
 @tool(args_schema=WeatherInputSchema)
 def get_weather(city: str) -> WeatherOutputSchema:
+    """Get weather information for a city."""
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&units=metric&appid={API_KEY}"
 
-    response = requests.get(url).json()
-
+    response = requests.get(url)
+    if response.status_code != 200:
+        return f"Error: Unable to fetch weather data. Status code: {response.status_code}, Message: {response.text}"
+        
+    data = response.json()
     return WeatherOutputSchema(
-        temperature=response["main"]["temp"],
-        condition=response["weather"][0]["description"],
-        humidity=response["main"]["humidity"]
+        temperature=data["main"]["temp"],
+        condition=data["weather"][0]["description"],
+        humidity=data["main"]["humidity"]
     )
 

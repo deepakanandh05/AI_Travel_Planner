@@ -1,7 +1,7 @@
 import os
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
-from .config_loader import load_config
+from travel_planner.utils.config_loader import load_config
 
 
 class ModelLoader:

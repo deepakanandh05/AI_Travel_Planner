@@ -29,17 +29,42 @@ class PlaceSearchOutput(BaseModel):
 
 
 # ------------------ HELPER FUNCTION ------------------ #
+def get_coordinates(place: str):
+    """Geocode a place name to get coordinates."""
+    url = f"https://api.geoapify.com/v1/geocode/search?text={place}&apiKey={API_KEY}"
+    try:
+        res = requests.get(url)
+        if res.status_code == 200:
+            data = res.json()
+            if data.get("features"):
+                props = data["features"][0]["properties"]
+                return props.get("lat"), props.get("lon")
+    except Exception as e:
+        print(f"Geocoding error: {e}")
+    return None, None
+
 def search_geoapify(place: str, categories: str, limit: int) -> List[PlaceResult]:
     """Internal function to call Geoapify API."""
+    
+    lat, lon = get_coordinates(place)
+    if not lat or not lon:
+        print(f"Could not geocode place: {place}")
+        return []
 
+    # Search within a 20km radius (20000 meters)
     url = (
-        f"{BASE_URL}?text={place}"
-        f"&categories={categories}"
+        f"{BASE_URL}?categories={categories}"
+        f"&filter=circle:{lon},{lat},20000"
         f"&limit={limit}"
         f"&apiKey={API_KEY}"
     )
 
-    res = requests.get(url).json()
+    res = requests.get(url)
+    if res.status_code != 200:
+        print(f"Error fetching data from Geoapify: {res.status_code} - {res.text}")
+        return []
+        
+    res = res.json()
     features = res.get("features", [])
 
     results = []
@@ -74,7 +99,7 @@ def search_restaurants(place: str, limit: int = 10) -> PlaceSearchOutput:
 @tool(args_schema=PlaceSearchInput)
 def search_hotels(place: str, limit: int = 10) -> PlaceSearchOutput:
     """Search hotels at a place."""
-    results = search_geoapify(place, "accommodation.hotel", limit)
+    results = search_geoapify(place, "accommodation", limit)
     return PlaceSearchOutput(results=results)
 
 

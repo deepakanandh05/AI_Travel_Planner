@@ -19,6 +19,9 @@ class GraphBuilder():
             search_activities
         ]
         
+        # WHY: LangGraph's ToolNode automatically executes tools in parallel when possible
+        # This is a built-in performance optimization - no additional code needed
+        # Note: Tool-level timeouts are handled in individual tool implementations (10s each)
         self.llm_with_tools = self.llm.bind_tools(tools=self.tools)
         
         self.graph = None

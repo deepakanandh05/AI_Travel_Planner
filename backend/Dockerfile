@@ -1,5 +1,5 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+# Use Python 3.11 slim image
+FROM python:3.11-slim
 
 # Set the working directory in the container
 WORKDIR /app
@@ -20,6 +20,6 @@ EXPOSE 8000
 # Define environment variable (can be overridden by Render)
 ENV PORT=8000
 
-# Run app.py when the container launches
+# Run api.py when the container launches (FastAPI app is in api.py, not main.py)
 # Use $PORT to read from environment variable
-CMD uvicorn main:app --host 0.0.0.0 --port $PORT
+CMD uvicorn api:app --host 0.0.0.0 --port $PORT

@@ -3,6 +3,7 @@ langchain-community
 langchain-experimental
 langchain_groq
 langchain_openai
+langchain-google-genai
 langchain_google_community
 langchain_tavily
 langgraph

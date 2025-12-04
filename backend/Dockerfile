@@ -13,11 +13,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the current directory contents into the container at /app
 COPY . .
 
-# Make port 8000 available to the world outside this container
+# Make port available to the world outside this container
+# Render will set PORT environment variable dynamically
 EXPOSE 8000
 
-# Define environment variable
+# Define environment variable (can be overridden by Render)
 ENV PORT=8000
 
 # Run app.py when the container launches
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Use $PORT to read from environment variable
+CMD uvicorn main:app --host 0.0.0.0 --port $PORT

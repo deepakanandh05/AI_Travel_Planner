@@ -12,15 +12,9 @@ load_dotenv()
 logger = setup_logger()
 
 def main():
-    # Check for API keys
-    if not os.getenv("GROQ_API_KEY"):
-        logger.error("GROQ_API_KEY not found in environment variables")
-        print("Warning: GROQ_API_KEY not found in environment variables. Please check your .env file.")
-        return
-    
     try:
         logger.info("Initializing AI Travel Planner Agent")
-        graph_builder = GraphBuilder(model_provider="groq")
+        graph_builder = GraphBuilder(model_provider="gemini")
         graph = graph_builder()
         
         print("=" * 60)

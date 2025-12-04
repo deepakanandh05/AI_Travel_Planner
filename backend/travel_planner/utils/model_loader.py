@@ -1,6 +1,7 @@
 import os
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from travel_planner.utils.config_loader import load_config
 
 
@@ -18,6 +19,9 @@ class ModelLoader:
 
         elif self.provider == "openai":
             return self._load_openai()
+        
+        elif self.provider == "gemini":
+            return self._load_gemini()
 
         else:
             raise ValueError(f"Unknown LLM provider: {self.provider}")
@@ -61,3 +65,19 @@ class ModelLoader:
                 "presence_penalty": cfg["presence_penalty"],
             },
         )
+    
+    def _load_gemini(self):
+        cfg = self.config["llm"]["gemini"]
+
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY missing in environment variables")
+
+        return ChatGoogleGenerativeAI(
+            model=cfg["model_name"],
+            google_api_key=api_key,
+            temperature=cfg["temperature"],
+            max_tokens=cfg.get("max_tokens"),
+            timeout=cfg.get("timeout", 60),
+        )
+

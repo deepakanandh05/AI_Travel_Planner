@@ -1,6 +1,12 @@
 langchain
 langchain-community
 langchain-experimental
+langchain_groq
+langchain_openai
+langchain_google_community
+langchain_tavily
+langgraph
+langgraph-checkpoint-sqlite
 fastapi
 python-dotenv
 streamlit
@@ -8,9 +14,4 @@ uvicorn
 pydantic
 httpx
 requests
-langchain_google_community
-langchain_tavily
-langchain_groq
-langchain_openai
-langgraph
 langchain-google-community[places]

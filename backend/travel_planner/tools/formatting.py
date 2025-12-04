@@ -1,10 +1,16 @@
 from langchain_core.tools import tool
 
 @tool
-def finalize_plan(plan_content: str):
+def format_response(content: str) -> str:
     """
-    Use this tool to submit the final comprehensive travel plan.
-    The input should be the full, formatted travel itinerary in Markdown.
-    This signals that the planning process is complete.
+    Format travel information in a beautiful, engaging way with emojis and markdown.
+    Use this tool to make your final response interesting and visually appealing.
+    
+    Input: Plain text content
+    Output: Formatted markdown with emojis
+    
+    WHY: Makes responses engaging and fun to read
     """
-    return "Plan submitted successfully."
+    # This is a pass-through tool that signals the LLM to format nicely
+    # The actual formatting happens in the LLM's response
+    return f"✨ Formatted content ready:\n{content}"
